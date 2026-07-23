@@ -60,9 +60,11 @@ You speak this language when three habits are unconscious:
 
 ## Source & downloads
 - **[Obsidian vault](https://github.com/tobyjackson/speaking-model/tree/main/vault)** — [download the zip](https://github.com/tobyjackson/speaking-model/releases/latest/download/speaking-model-vault.zip), open in Obsidian
-- Contributions: PRs welcome — see below
+- **[for-agents](https://github.com/tobyjackson/speaking-model/tree/main/for-agents)** — the Grammar as drop-in Claude Code config: two CLAUDE.md lines and a /rewrite command
+
 
 ## Contributing
+- Contributions: PRs welcome — see below
 
 New entries welcome. A good entry has: the term, a one-sentence
 definition of the *contract* it makes, and both a 🔰 and 🏗️ example. Open
