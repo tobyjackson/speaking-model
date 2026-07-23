@@ -84,3 +84,6 @@ CC BY 4.0 — share and adapt freely, with attribution.
 
 *Drafted in collaboration with Claude (Anthropic), July 2026. The
 collaboration is itself a demonstration of Part VI.*
+## Contributing via PRs
+
+This repo now requires pull requests. Create a branch, open a PR, and merge through the PR.
