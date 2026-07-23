@@ -53,10 +53,10 @@ You speak this language when three habits are unconscious:
 
 ## In this repo
 
-- **[The book](speaking-model.md)** — the full dictionary
-- **[Cheat sheet](cheatsheet/)** — the Grammar and the core vocabulary on one page
-- **[Prompt linter](linter/)** — paste a prompt, see which grammar slots you left empty; runs entirely in your browser
-- **[Obsidian vault](vault/)** — the book as ~140 linked notes; open the folder as a vault
+- **[The book](https://tobyjackson.com/speaking-model/)** — the full dictionary
+- **[Cheat sheet](https://tobyjackson.com/speaking-model/cheatsheet/)** — the Grammar and the core vocabulary on one page
+- **[Prompt linter](https://tobyjackson.com/speaking-model/linter/)** — paste a prompt, see which grammar slots you left empty; runs entirely in your browser
+- **[Obsidian vault](vault/)** — the book as ~140 linked notes; [download the zip](https://github.com/tobyjackson/speaking-model/releases/latest/download/speaking-model-vault.zip), unzip, and open the folder in Obsidian ("Open folder as vault")
 
 ## Contributing
 
