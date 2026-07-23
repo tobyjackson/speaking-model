@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speaking Model — Cheat Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Archivo+Narrow:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1a17; --paper:#fdfcf9; --rubric:#8e2f2a; --slate:#5a5f66; --rule:#d8d4cc;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{background:#e9e6df;}
+  body{
+    font-family:'Source Serif 4', Georgia, serif; color:var(--ink);
+    display:flex; justify-content:center; padding:24px 12px;
+  }
+  .sheet{
+    background:var(--paper); width:8.5in; min-height:11in; position:relative;
+    padding:0.45in 0.62in 0.4in 0.5in; box-shadow:0 2px 24px rgba(28,26,23,.18);
+  }
+  /* dictionary guide words */
+  .guide{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:'Archivo Narrow',sans-serif; font-size:8.5pt; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--slate); border-bottom:1.5pt solid var(--ink);
+    padding-bottom:4pt; margin-bottom:10pt;
+  }
+  .guide .pageno{color:var(--rubric); font-weight:600;}
+  header.title{display:flex; align-items:flex-end; gap:14pt; margin-bottom:8pt;}
+  h1{font-family:'Fraunces',serif; font-weight:700; font-size:26pt; line-height:1;}
+  h1 .dot{color:var(--rubric);}
+  .pron{font-family:'Source Serif 4',serif; font-style:italic; font-size:9.5pt; color:var(--slate); padding-bottom:2pt;}
+  .thesis{
+    font-size:9.5pt; font-style:italic; color:var(--ink); margin:2pt 0 10pt;
+  }
+  .thesis b{font-style:normal; color:var(--rubric); font-weight:600;}
+
+  /* grammar strip */
+  .grammar{border-top:2.5pt solid var(--ink); border-bottom:.75pt solid var(--ink); padding:6pt 0 7pt; margin-bottom:11pt;}
+  .grammar .label{
+    font-family:'Archivo Narrow',sans-serif; font-size:8pt; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--rubric); font-weight:600; margin-bottom:5pt;
+  }
+  .slots{display:grid; grid-template-columns:repeat(8,1fr);}
+  .slot{padding:0 5pt; border-left:.75pt solid var(--rule);}
+  .slot:first-child{border-left:none; padding-left:0;}
+  .slot b{display:block; font-family:'Archivo Narrow',sans-serif; font-size:7.6pt; letter-spacing:.08em; text-transform:uppercase; margin-bottom:1.5pt;}
+  .slot span{display:block; font-size:7.6pt; line-height:1.32; color:var(--slate); font-style:italic;}
+
+  /* entry columns */
+  .cols{column-count:3; column-gap:16pt; column-rule:.75pt solid var(--rule);}
+  .sect{
+    break-after:avoid; font-family:'Archivo Narrow',sans-serif; font-weight:600;
+    font-size:8.4pt; letter-spacing:.16em; text-transform:uppercase; color:var(--rubric);
+    border-bottom:.75pt solid var(--ink); padding-bottom:2pt; margin:0 0 5pt;
+  }
+  .sect + .entry{break-before:avoid;}
+  .cols > .sect:not(:first-child){margin-top:9pt;}
+  .entry{font-size:8.6pt; line-height:1.38; margin-bottom:4.6pt; break-inside:avoid;}
+  .entry b{font-weight:600;}
+  .entry .pos{font-style:italic; color:var(--slate); font-size:8pt;}
+  .entry.x b{color:var(--rubric); text-decoration:line-through; text-decoration-thickness:.75pt;}
+  .entry .fix{color:var(--slate); font-style:italic;}
+
+  /* footer */
+  footer{
+    border-top:2.5pt solid var(--ink); margin-top:10pt; padding-top:6pt;
+    display:flex; justify-content:space-between; gap:14pt; align-items:flex-start;
+  }
+  .fluency{font-size:8.4pt; line-height:1.4; max-width:5.4in;}
+  .fluency b{font-family:'Archivo Narrow',sans-serif; font-size:8pt; letter-spacing:.14em; text-transform:uppercase; color:var(--rubric);}
+  .colophon{font-size:7.8pt; font-style:italic; color:var(--slate); text-align:right; line-height:1.4;}
+
+  /* thumb index */
+  .thumbs{position:absolute; right:0; top:1.35in; width:.24in; display:flex; flex-direction:column; gap:3pt;}
+  .thumbs div{
+    background:var(--rubric); color:var(--paper); font-family:'Archivo Narrow',sans-serif;
+    font-size:6.8pt; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+    writing-mode:vertical-rl; padding:5pt 2pt; text-align:center;
+    border-radius:2pt 0 0 2pt;
+  }
+  .thumbs div:nth-child(even){background:var(--ink);}
+
+  @media print{
+    html{background:#fff;} body{padding:0;}
+    .sheet{box-shadow:none; width:auto; min-height:auto; padding:0.35in 0.5in 0.3in 0.4in;}
+    @page{size:letter; margin:0;}
+  }
+  @media (max-width:900px){
+    .sheet{width:100%; min-height:auto;}
+    .slots{grid-template-columns:repeat(4,1fr); row-gap:6pt;}
+    .cols{column-count:1;}
+    .thumbs{display:none;}
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <div class="thumbs" aria-hidden="true">
+    <div>verbs</div><div>controls</div><div>truth</div><div>usage</div>
+  </div>
+
+  <div class="guide"><span>audit&nbsp;&nbsp;▸</span><span class="pageno">one page</span><span>▸&nbsp;&nbsp;verify</span></div>
+
+  <header class="title">
+    <h1>speaking model<span class="dot">.</span></h1>
+    <div class="pron">/ˈpräk-tə-ˌshə-nərz ˈdik-shə-ˌner-ē/ &nbsp;n.&nbsp; the working language</div>
+  </header>
+  <p class="thesis">A model completes the document you started. <b>Every word is evidence</b> about what document this is — vague evidence, generic document; precise evidence, precise document.</p>
+
+  <section class="grammar" aria-label="The grammar of a complete request">
+    <div class="label">The grammar — when output disappoints, ask which slot was empty</div>
+    <div class="slots">
+      <div class="slot"><b>Role</b><span>reviewing as a security auditor</span></div>
+      <div class="slot"><b>Context</b><span>what it is; what I've ruled out</span></div>
+      <div class="slot"><b>Material</b><span>fenced: &lt;code&gt;…&lt;/code&gt;</span></div>
+      <div class="slot"><b>Verb</b><span>audit it</span></div>
+      <div class="slot"><b>Constraints</b><span>only X; never Y; MUST&gt;SHOULD</span></div>
+      <div class="slot"><b>Format</b><span>table: finding | file:line</span></div>
+      <div class="slot"><b>Verification</b><span>quote the exact line</span></div>
+      <div class="slot"><b>Epistemic</b><span>unsure → say so, don't guess</span></div>
+    </div>
+  </section>
+
+  <div class="cols">
+    <div class="sect">Verbs are contracts</div>
+    <p class="entry"><b>audit</b> <span class="pos">v.</span> exhaustive pass against stated criteria; completeness over judgment.</p>
+    <p class="entry"><b>brainstorm</b> <span class="pos">v.</span> quantity on purpose; quality filter off. <i>Include bad ideas.</i></p>
+    <p class="entry"><b>critique</b> <span class="pos">v.</span> find problems, fix nothing. Attach a rubric and an order.</p>
+    <p class="entry"><b>decompose</b> <span class="pos">v.</span> break into independent parts before any work. The opening move.</p>
+    <p class="entry"><b>describe</b> <span class="pos">v.</span> report what's there, as-built. Exposes misreadings before they become edits.</p>
+    <p class="entry"><b>diagnose</b> <span class="pos">v.</span> find the cause; cure explicitly deferred. <i>Touch nothing yet.</i></p>
+    <p class="entry"><b>draft</b> <span class="pos">v.</span> first version meant for revision; speed licensed. Pairs with <b>tighten</b>.</p>
+    <p class="entry"><b>estimate</b> <span class="pos">v.</span> order-of-magnitude licensed; assumptions listed for correction.</p>
+    <p class="entry"><b>fix</b> <span class="pos">v.</span> smallest change resolving the named defect. The anti-rewrite.</p>
+    <p class="entry"><b>pre-mortem</b> <span class="pos">v.</span> assume it failed; explain why. Licenses the pessimism "list risks" misses.</p>
+    <p class="entry"><b>red-team</b> <span class="pos">v.</span> attack it: exploits, failure modes, misreadings. Strongest criticism verb.</p>
+    <p class="entry"><b>refactor</b> <span class="pos">v.</span> restructure, behavior identical; tests still pass. ≠ <b>rewrite</b>: same goal, new construction, big diffs licensed.</p>
+    <p class="entry"><b>steelman</b> <span class="pos">v.</span> build the strongest version of the position you disfavor. Antidote to easy agreement.</p>
+    <p class="entry"><b>summarize</b> <span class="pos">v.</span> compress without adding. Always attach a size + audience.</p>
+    <p class="entry"><b>triage</b> <span class="pos">v.</span> sort by severity; solve nothing yet.</p>
+
+    <div class="sect">Modifiers &amp; moves</div>
+    <p class="entry"><b>plan first; wait for approval</b> — proposal ≠ execution. Reviewing plans is judgment's best per-minute buy.</p>
+    <p class="entry"><b>think it through step by step</b> — visible reasoning; spend on hard problems, not lookups.</p>
+    <p class="entry"><b>keep A, change B — because C</b> — the revision atom. Reasons update the task model.</p>
+    <p class="entry"><b>one option, not a menu</b> — pick the best; defend it in a sentence.</p>
+    <p class="entry"><b>go again, but…</b> — retry with exactly one delta. That's the experiment.</p>
+    <p class="entry"><b>summarize where we are</b> — checkpoint; portable state for a fresh session.</p>
+    <p class="entry"><b>audience clause</b> — "explain to a [X] who knows [Y] but not [Z]." Highest compression in the language.</p>
+    <p class="entry"><b>one example &gt; three sentences</b> — a filled input→output pair is a specification.</p>
+
+    <div class="sect">Truth controls</div>
+    <p class="entry"><b>"I don't know" is licensed</b> — and beats a guess. Say so explicitly.</p>
+    <p class="entry"><b>quote the exact line</b> — fabricated quotes are checkable; grounding beats trust.</p>
+    <p class="entry"><b>don't guess — ask</b> — ambiguity → question, not assumption.</p>
+    <p class="entry"><b>what would change your answer?</b> — surfaces the load-bearing assumptions.</p>
+    <p class="entry"><b>which part are you least sure of?</b> — comparative confidence calibrates best.</p>
+    <p class="entry"><b>honest, not agreeable</b> — never signal the answer you want; you'll get it.</p>
+
+    <div class="sect">Usage notes — say this, not that</div>
+    <p class="entry x"><b>don't hallucinate</b> <span class="fix">→ ground it: sources, quotes, uncertainty licensed.</span></p>
+    <p class="entry x"><b>make it better</b> <span class="fix">→ show one sentence in the target voice.</span></p>
+    <p class="entry x"><b>this is solid, right?</b> <span class="fix">→ "what's weakest here?"</span></p>
+    <p class="entry x"><b>be thorough</b> <span class="fix">→ a checkable criterion.</span></p>
+    <p class="entry x"><b>same prompt, again</b> <span class="fix">→ change one variable.</span></p>
+  </div>
+
+  <footer>
+    <p class="fluency"><b>Fluency test</b> &nbsp; 1&nbsp;·&nbsp;You state the check with every task. &nbsp; 2&nbsp;·&nbsp;You correct with reasons and diffs. &nbsp; 3&nbsp;·&nbsp;You ask for disagreement — and don't flinch.</p>
+    <p class="colophon">Speaking Model — a practitioner's dictionary<br>full text, linter &amp; vault: github.com/tobyjackson/speaking-model</p>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speaking Model — Prompt Linter</title>
+<meta name="description" content="Paste a prompt; see which slots of the grammar are empty. A companion tool to Speaking Model: A Practitioner's Dictionary.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Archivo+Narrow:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1c1a17;--paper:#fdfcf9;--rubric:#8e2f2a;--slate:#5a5f66;--rule:#d8d4cc;--ok:#3e6b48;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{background:#e9e6df;}
+  body{font-family:'Source Serif 4',Georgia,serif;color:var(--ink);display:flex;justify-content:center;padding:28px 14px;}
+  .page{background:var(--paper);max-width:1060px;width:100%;padding:34px 42px 30px;box-shadow:0 2px 24px rgba(28,26,23,.18);}
+  .guide{display:flex;justify-content:space-between;font-family:'Archivo Narrow',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);border-bottom:2px solid var(--ink);padding-bottom:6px;margin-bottom:14px;}
+  .guide span:nth-child(2){color:var(--rubric);font-weight:600;}
+  h1{font-family:'Fraunces',serif;font-weight:700;font-size:30px;line-height:1;}
+  h1 .dot{color:var(--rubric);}
+  .thesis{font-style:italic;font-size:14px;color:var(--slate);margin:6px 0 20px;}
+  .thesis b{font-style:normal;color:var(--ink);}
+  .work{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start;}
+  label.sect{display:block;font-family:'Archivo Narrow',sans-serif;font-weight:600;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);border-bottom:1px solid var(--ink);padding-bottom:3px;margin-bottom:8px;}
+  textarea{width:100%;min-height:340px;border:1px solid var(--rule);background:#fffef9;padding:12px 14px;font-family:'Source Serif 4',serif;font-size:15px;line-height:1.55;color:var(--ink);resize:vertical;}
+  textarea:focus{outline:2px solid var(--rubric);outline-offset:1px;}
+  .btnrow{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
+  button{font-family:'Archivo Narrow',sans-serif;font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;}
+  button.ghost{background:transparent;color:var(--ink);}
+  button:focus-visible{outline:2px solid var(--rubric);outline-offset:2px;}
+  .slots{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .slot{border:1px solid var(--rule);border-left:4px solid var(--rule);padding:8px 10px;background:#fbfaf5;}
+  .slot h3{font-family:'Archivo Narrow',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:baseline;}
+  .slot .mark{font-size:12px;}
+  .slot p{font-size:12.5px;line-height:1.45;color:var(--slate);margin-top:3px;}
+  .slot p b{color:var(--ink);font-weight:600;}
+  .slot.on{border-left-color:var(--ok);}
+  .slot.on .mark{color:var(--ok);}
+  .slot.off{border-left-color:var(--rubric);}
+  .slot.off .mark{color:var(--rubric);}
+  .slot.na{opacity:.62;}
+  .verdict{margin-top:12px;font-size:14px;line-height:1.5;border-top:2px solid var(--ink);padding-top:10px;}
+  .verdict b{color:var(--rubric);}
+  .usage{margin-top:14px;}
+  .usage h2{font-family:'Archivo Narrow',sans-serif;font-weight:600;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);border-bottom:1px solid var(--ink);padding-bottom:3px;margin-bottom:6px;}
+  .usage ul{list-style:none;}
+  .usage li{font-size:13px;line-height:1.5;margin-bottom:5px;}
+  .usage li s{color:var(--rubric);text-decoration-thickness:1px;}
+  .usage li i{color:var(--slate);}
+  .usage li.clean{color:var(--ok);font-style:italic;}
+  footer{margin-top:22px;border-top:2px solid var(--ink);padding-top:8px;display:flex;justify-content:space-between;gap:14px;font-size:12px;color:var(--slate);font-style:italic;flex-wrap:wrap;}
+  footer a{color:var(--rubric);}
+  @media (max-width:820px){.work{grid-template-columns:1fr;}.slots{grid-template-columns:1fr;}}
+  @media (prefers-reduced-motion:no-preference){.slot{transition:border-color .25s;}}
+</style>
+</head>
+<body>
+<main class="page">
+  <div class="guide"><span>paste ▸</span><span>the prompt linter</span><span>▸ tighten</span></div>
+  <h1>speaking model<span class="dot">.</span> <span style="font-weight:500;font-size:20px;">/linter/</span></h1>
+  <p class="thesis"><b>A model completes the document you started.</b> This tool checks which slots of that document you left empty — heuristically, honestly, entirely in your browser. Nothing you paste leaves this page.</p>
+
+  <div class="work">
+    <section>
+      <label class="sect" for="prompt">Your prompt</label>
+      <textarea id="prompt" spellcheck="false" placeholder="Paste the prompt you're about to send…"></textarea>
+      <div class="btnrow">
+        <button id="lintBtn" type="button">Lint it</button>
+        <button id="exampleBtn" type="button" class="ghost">Load a weak example</button>
+        <button id="clearBtn" type="button" class="ghost">Clear</button>
+      </div>
+      <div class="usage" id="usage" hidden>
+        <h2>Usage notes</h2>
+        <ul id="usageList"></ul>
+      </div>
+    </section>
+
+    <section aria-live="polite">
+      <label class="sect">The grammar — slot by slot</label>
+      <div class="slots" id="slots"></div>
+      <p class="verdict" id="verdict">Paste a prompt and lint it. Short factual questions legitimately need few slots — the linter scales its judgment to the size of the ask.</p>
+    </section>
+  </div>
+
+  <footer>
+    <span>Heuristic, not a model: it pattern-matches phrases from the book. A green slot can still be badly filled; a red slot can be fine for a simple ask. Judgment stays with you.</span>
+    <span>From <a href="https://github.com/tobyjackson/speaking-model">Speaking Model: A Practitioner's Dictionary</a></span>
+  </footer>
+</main>
+
+<script>
+const SLOTS = [
+  {id:'verb', name:'Task verb',
+   fix:'Lead with a contract verb: audit / diagnose / refactor / summarize / triage — not "help with" or "look at".'},
+  {id:'context', name:'Context',
+   fix:'One or two sentences of situation: what the thing is, what you already tried or ruled out.'},
+  {id:'material', name:'Material, fenced',
+   fix:'Fence pasted material: triple backticks, <tags>…</tags>, or "---" — so content is never read as commands.'},
+  {id:'constraints', name:'Constraints',
+   fix:'State the fences: "only change X", "never touch Y", "no new dependencies".'},
+  {id:'format', name:'Format contract',
+   fix:'Name the shape: "as a two-column table", "JSON only, no prose", "3 bullets".'},
+  {id:'length', name:'Length as numbers',
+   fix:'Give a number: "under 200 words", "5 bullets", "one screen".'},
+  {id:'verification', name:'Verification',
+   fix:'Add a check: "quote the exact line", "run the tests", "must satisfy criteria below".'},
+  {id:'epistemic', name:'Epistemic control',
+   fix:'Add one: "if unsure, say so — don\'t guess", "ask before assuming", "flag anything unverified".'}
+];
+
+const RX = {
+  verbStrong: /\b(audit|diagnose|triage|decompose|refactor|rewrite|summari[sz]e|critique|review|steelman|red[- ]team|brainstorm|extract|classify|convert|translate|port|rank|prioriti[sz]e|trace|walk (me )?through|estimate|compare|contrast|draft|outline|debug|fix|implement|write|explain|describe|analy[sz]e|quiz|pre[- ]?mortem|verify|check|generate|list)\b/i,
+  verbWeak: /\b(help( me)?( with)?|look at|take a look|do something|handle|deal with|work on)\b/i,
+  context: /\b(i'?m|i am|we'?re|we are|my|our|this is|it'?s a|for a project|background|currently|so far|context)\b/i,
+  triedRuled: /\b(already (tried|checked|ruled out|tested)|i'?ve tried|didn'?t work|ruled out)\b/i,
+  material: /(```|<[a-z][a-z0-9_-]*>|\n---\n|"""|see (the )?(attached|below|following)|pasted (below|above)|here (is|are) the)/i,
+  constraints: /\b(must|never|always|only|don'?t|do not|avoid|no more than|at most|at least|exclude|without|except|keep .* unchanged|out of scope|not allowed|forbid)\b/i,
+  format: /\b(as a table|table of|json|yaml|csv|markdown|bullet|numbered list|respond (with|in|as)|output (only|as|format)|format(ted)? as|in the form of|headings?|one[- ]liner|diff)\b/i,
+  length: /\b(\d+)\s*(words?|bullets?|sentences?|paragraphs?|lines?|items?|points?|pages?|steps?|options?)\b|\bunder \d+|\bmax(imum)? (of )?\d+|\bone (paragraph|sentence|page|screen)\b/i,
+  verification: /\b(verify|double[- ]check|cite|quote (the )?(exact|line|source)|source[sd]?|run (the )?tests?|make sure|must pass|acceptance criteria|definition of done|check (it|that|against)|confirm)\b/i,
+  epistemic: /\b(if (you('| a)re )?(not sure|unsure|uncertain)|don'?t guess|say (so|you don'?t know)|i don'?t know|ask (me )?(before|first|if)|flag (anything|what)|unverified|confidence|assumptions?|distinguish fact)\b/i,
+  audience: /\b(explain (it )?to|for a (beginner|novice|child|senior|junior|non[- ]technical)|assume i know|audience|eli5|layman)\b/i,
+  hallucinate: /\b(don'?t|do not|no) hallucinat/i,
+  vagueQuality: /\b(be (accurate|thorough|careful|detailed|professional)|do your best|high[- ]quality)\b/i,
+  makeBetter: /\bmake (it|this) (better|nicer|punchier|more professional)\b|\bimprove (it|this)\b(?![^.]*\b(by|so that|to)\b)/i,
+  leading: /\b(right\?|correct\?|isn'?t it\?|don'?t you (think|agree)|wouldn'?t you say)/i,
+  inflation: /\b(world'?s (best|greatest|#?1)|foremost expert|genius[- ]level|the best .* in the world)\b/i
+};
+
+function words(t){return (t.trim().match(/\S+/g)||[]).length;}
+
+function lint(t){
+  const w = words(t);
+  const simple = w < 25 && !RX.material.test(t);
+  const hasPaste = RX.material.test(t) || w > 120;
+  const res = {};
+
+  const strong = RX.verbStrong.test(t), weak = RX.verbWeak.test(t);
+  res.verb = strong ? {state:'on', note:'Contract verb found: <b>'+t.match(RX.verbStrong)[0].toLowerCase()+'</b>.'}
+           : weak   ? {state:'off', note:'Only a weak ask ("'+t.match(RX.verbWeak)[0]+'").'}
+                    : {state:'off', note:'No operative verb detected.'};
+
+  res.context = (RX.context.test(t) && w > 15) || RX.triedRuled.test(t)
+    ? {state:'on', note: RX.triedRuled.test(t) ? 'Includes what you tried/ruled out — excellent.' : 'Some situational context present.'}
+    : {state: simple ? 'na' : 'off', note: simple ? 'Simple ask — context optional.' : 'No background detected.'};
+
+  res.material = RX.material.test(t)
+    ? {state:'on', note:'Fenced or referenced material found.'}
+    : {state: hasPaste ? 'off' : 'na', note: hasPaste ? 'Long content with no fences — instructions and content may blur.' : 'No pasted material — not needed.'};
+
+  res.constraints = RX.constraints.test(t)
+    ? {state:'on', note:'Hard-limit language present ("'+t.match(RX.constraints)[0]+'").'}
+    : {state: simple ? 'na' : 'off', note: simple ? 'Simple ask — fences optional.' : 'No must/never/only fences.'};
+
+  res.format = RX.format.test(t)
+    ? {state:'on', note:'Output shape named.'}
+    : {state: simple ? 'na' : 'off', note: simple ? 'Short answer expected — fine.' : 'Shape unspecified; you\'ll get the default essay.'};
+
+  res.length = RX.length.test(t)
+    ? {state:'on', note:'Numeric budget found ("'+t.match(RX.length)[0]+'").'}
+    : {state:'na', note:'No length budget — fine unless size matters to you.'};
+
+  res.verification = RX.verification.test(t)
+    ? {state:'on', note:'A check is stated.'}
+    : {state: simple ? 'na' : 'off', note: simple ? 'Trivial to eyeball — fine.' : 'No definition of done. How will you both know it\'s right?'};
+
+  res.epistemic = RX.epistemic.test(t)
+    ? {state:'on', note:'Honesty licensed.'}
+    : {state: (simple && !hasPaste) ? 'na' : 'off', note:'Nothing licenses "I don\'t know" over a fluent guess.'};
+
+  const notes = [];
+  if (RX.hallucinate.test(t)) notes.push('<s>"don\'t hallucinate"</s> — no such switch. <i>Instead: "quote the exact line you\'re basing each claim on."</i>');
+  if (RX.vagueQuality.test(t)) notes.push('<s>"'+t.match(RX.vagueQuality)[0]+'"</s> — content-free; already the goal. <i>Replace with a checkable criterion.</i>');
+  if (RX.makeBetter.test(t)) notes.push('<s>"make it better / improve it"</s> — better <i>how</i>? <i>Show one example in the target voice, or name the axis: shorter, warmer, stricter.</i>');
+  if (RX.leading.test(t)) notes.push('<s>leading question</s> — you\'ll harvest agreement. <i>Ask "what\'s weakest here?" instead.</i>');
+  if (RX.inflation.test(t)) notes.push('<s>role inflation</s> — "world\'s best" adds nothing. <i>A plain role ("as a security auditor") does the real work.</i>');
+  if (RX.audience.test(t)) notes.push('<span style="color:var(--ok)">✓ audience clause found — the highest-compression sentence in the language.</span>');
+  return {res, notes, w};
+}
+
+const slotsEl = document.getElementById('slots');
+function render(data){
+  slotsEl.innerHTML = '';
+  let filled=0, applicable=0;
+  for (const s of SLOTS){
+    const r = data.res[s.id];
+    if (r.state !== 'na') { applicable++; if (r.state==='on') filled++; }
+    const div = document.createElement('div');
+    div.className = 'slot ' + r.state;
+    const mark = r.state==='on' ? '✓ filled' : r.state==='off' ? '✗ empty' : '— n/a';
+    div.innerHTML = '<h3>'+s.name+'<span class="mark">'+mark+'</span></h3>'+
+      '<p>'+r.note+(r.state==='off' ? ' <b>Fix:</b> '+s.fix : '')+'</p>';
+    slotsEl.appendChild(div);
+  }
+  const v = document.getElementById('verdict');
+  const missing = SLOTS.filter(s=>data.res[s.id].state==='off').map(s=>s.name.toLowerCase());
+  if (applicable===0){ v.innerHTML = 'Nothing to lint yet.'; }
+  else if (missing.length===0){ v.innerHTML = 'All applicable slots filled ('+filled+'/'+applicable+'). Remember: a green slot can still be filled <b>badly</b> — the linter reads phrasing, not quality.'; }
+  else { v.innerHTML = filled+'/'+applicable+' applicable slots filled. Highest-value fixes, in order: <b>'+missing.slice(0,3).join('</b>, <b>')+'</b>. When output disappoints, it\'s almost always context, constraints, or verification.'; }
+
+  const u = document.getElementById('usage'), ul = document.getElementById('usageList');
+  ul.innerHTML = data.notes.length ? data.notes.map(n=>'<li>'+n+'</li>').join('')
+                                   : '<li class="clean">No anti-patterns detected.</li>';
+  u.hidden = false;
+}
+
+const ta = document.getElementById('prompt');
+document.getElementById('lintBtn').addEventListener('click', ()=>render(lint(ta.value)));
+ta.addEventListener('input', ()=>{ if(ta.value.trim().length>0) render(lint(ta.value)); });
+document.getElementById('clearBtn').addEventListener('click', ()=>{ta.value='';slotsEl.innerHTML='';document.getElementById('usage').hidden=true;document.getElementById('verdict').textContent='Paste a prompt and lint it.';});
+document.getElementById('exampleBtn').addEventListener('click', ()=>{
+  ta.value = "Can you look at my code and make it better? Be thorough and don't hallucinate. It's really important, this approach is solid right?";
+  render(lint(ta.value));
+});
+</script>
+</body>
+</html>
