@@ -17,9 +17,11 @@ Everything in this book is technique for supplying precise evidence.
 
 ## Who this is for
 
-- **New users** — Part I (the Verbs) carries a plain-language example (🔰)
-  for every entry; dual-level coverage is expanding through the rest of the book
-- **Engineers & architects** — every core entry has an advanced example (🏗️)
+- **New users** — every entry in Parts I–VI (the request techniques —
+  Verbs, Modifiers, Constraint Grammar, Epistemic Controls, Context Syntax,
+  the Iteration Loop) carries a plain-language example (🔰)
+- **Engineers & architects** — the same entries each carry an advanced
+  example (🏗️) too
 - **Anyone tired of cargo-cult prompt tips** — the preface explains why
   "power words" are astrology, and what works instead
 
