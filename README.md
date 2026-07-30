@@ -17,7 +17,8 @@ Everything in this book is technique for supplying precise evidence.
 
 ## Who this is for
 
-- **New users** — every core entry has a plain-language example (🔰)
+- **New users** — Part I (the Verbs) carries a plain-language example (🔰)
+  for every entry; dual-level coverage is expanding through the rest of the book
 - **Engineers & architects** — every core entry has an advanced example (🏗️)
 - **Anyone tired of cargo-cult prompt tips** — the preface explains why
   "power words" are astrology, and what works instead
@@ -51,8 +52,6 @@ You speak this language when three habits are unconscious:
 2. You correct with reasons and diffs — "keep A, change B, because C."
 3. You ask for disagreement and don't flinch when you get it.
 
-## In this repo
-
 ## Read & use
 - **[The book](https://tobyjackson.com/speaking-model/speaking-model.html)**
 - **[Cheat sheet](https://tobyjackson.com/speaking-model/cheatsheet/)**
@@ -64,11 +63,12 @@ You speak this language when three habits are unconscious:
 
 
 ## Contributing
-- Contributions: PRs welcome — see below
 
 New entries welcome. A good entry has: the term, a one-sentence
-definition of the *contract* it makes, and both a 🔰 and 🏗️ example. Open
-a PR; keep the tone of the book — precise, honest, no astrology.
+definition of the *contract* it makes, and both a 🔰 and 🏗️ example.
+This repo requires pull requests from outside contributors — create a
+branch, open a PR, and it merges through review. Keep the tone of the
+book: precise, honest, no astrology.
 
 ## Honesty note
 
@@ -84,6 +84,3 @@ CC BY 4.0 — share and adapt freely, with attribution.
 
 *Drafted in collaboration with Claude (Anthropic), July 2026. The
 collaboration is itself a demonstration of Part VI.*
-## Contributing via PRs
-
-This repo now requires pull requests. Create a branch, open a PR, and merge through the PR.
