@@ -179,6 +179,8 @@ intermediate reasoning; measurably helps multi-step problems.
 **"think hard / take your time on this one"** — allocates deeper effort
 (a literal budget in tools with extended thinking). Spend it on hard
 problems; it's wasted on lookups.
+- 🔰 "This one's important — really think it through before you answer, don't just go with your first idea."
+- 🏗️ "Spend real budget on this one — it's the concurrency bug, not a lookup."
 
 **"plan first; wait for my approval"** — separates proposal from execution.
 Reviewing plans is where human judgment buys the most per minute.
@@ -188,6 +190,8 @@ Reviewing plans is where human judgment buys the most per minute.
 
 **"answer first, then explain"** — inverts essay order; ideal when you'll
 only read the reasoning on disagreement.
+- 🔰 "Just tell me if I should refinance — the why can come after, only if I ask."
+- 🏗️ "Verdict first: does this design pass review? The reasoning after, only if I push back."
 
 **"from first principles"** — derive rather than recall; suppresses
 pattern-matched conventional wisdom.
@@ -195,25 +199,33 @@ pattern-matched conventional wisdom.
 - 🏗️ "From first principles, what's the minimum coordination this problem
   requires? Ignore what existing systems do."
 
-**"zoom out / zoom in"** — altitude control. "Zoom out: what problem is
-this actually solving?" / "Zoom in on step 3 only."
+**"zoom out / zoom in"** — altitude control.
+- 🔰 "Zoom out — remind me what problem this whole vacation plan is even solving."
+- 🏗️ "Zoom in on step 3 only — the migration script, not the whole rollout plan."
 
 **"be pedantic / be strict"** — raises the standard for what counts as
 correct; invites nitpicks you'd otherwise be spared.
+- 🔰 "Be pedantic about this recipe — is a 'cup' of flour scooped or spooned? Don't let me guess."
 - 🏗️ "Be pedantic about the spec: flag every place we're relying on
   undefined behavior, however unlikely."
 
-**"one option, not a menu"** — anti-hedging: "Pick the best one and defend
-it in a sentence."
+**"one option, not a menu"** — anti-hedging.
+- 🔰 "Just pick the restaurant. Don't give me five options — I'll never decide."
+- 🏗️ "Pick one caching strategy and defend it in a sentence — not a pros/cons table of four."
 
 **"stay literal / no interpretation"** — for extraction, transcription,
 translation, where helpfulness-as-improvement is a bug.
+- 🔰 "Transcribe exactly what's on the label — don't 'helpfully' round the numbers."
+- 🏗️ "Extract the log lines verbatim — don't paraphrase timestamps or reformat the JSON."
 
 **"smaller steps" / "go slower"** — recalibrate step size mid-stream.
 Instant, underused.
+- 🔰 "Too much at once — just give me the next single step for changing this tire."
+- 🏗️ "Slow down — one function at a time, and pause after each for me to check."
 
-**"show, don't tell"** — demand the artifact over the description of it:
-"Don't describe the fix — show the diff."
+**"show, don't tell"** — demand the artifact over the description of it.
+- 🔰 "Don't describe the paint color — show me an actual swatch."
+- 🏗️ "Don't describe the fix — show the diff."
 
 ---
 
@@ -227,14 +239,19 @@ Implied constraints fail; enumerated prohibitions succeed.
 
 **Scope fences** — the "only" family: "change only X," "Y is out of
 scope," "don't touch Z." The best defense against overzealous helpfulness.
+- 🔰 "Only touch the guest list — the seating chart is out of scope for now."
+- 🏗️ "Only touch the retry logic — the connection pool is out of scope for this PR."
 
 **Requirement tiers** — label MUST vs SHOULD vs NICE-TO-HAVE explicitly;
 unlabeled wish-lists get treated as uniform and satisfied unevenly.
+- 🔰 "MUST: fits in the trunk. SHOULD: under $30k. NICE: sunroof. Don't treat the sunroof like a dealbreaker."
 - 🏗️ "MUST: idempotent, <50ms p99. SHOULD: zero new deps. NICE: reads
   clean. Sacrifice in reverse order."
 
 **Positive beats negative** — name the target, not the anti-target: "plain
 prose" > "no bullets." Negation forces imagining the forbidden thing.
+- 🔰 "Say what the dress code IS — 'business casual' — not just 'no jeans, no sneakers.'"
+- 🏗️ "State the target style — 'idiomatic Go' — not a list of things not to do."
 
 **Format contracts** — exact shape, stated up front, with a filled example.
 One example of the format outperforms three sentences describing it.
@@ -244,9 +261,12 @@ One example of the format outperforms three sentences describing it.
 
 **Length as numbers** — "3 bullets," "under 200 words." Adjectives are
 guesses; numbers are contracts.
+- 🔰 "Keep the toast to 2 minutes — not 'short,' an actual number I can plan around."
+- 🏗️ "Cap the changelog entry at 3 bullets — not a paragraph."
 
-**Priority order** — rank constraints so conflicts resolve your way:
-"If brevity and completeness conflict, choose completeness."
+**Priority order** — rank constraints so conflicts resolve your way.
+- 🔰 "If the recipe and the timer disagree, trust the timer, not the recipe's guess."
+- 🏗️ "If correctness and performance conflict here, correctness wins — say so before you optimize anything."
 
 **Budgets** — time/cost/complexity ceilings change the answer honestly:
 - 🔰 "Best dinner I can cook in 20 minutes with what's in a normal pantry."
@@ -254,6 +274,7 @@ guesses; numbers are contracts.
   fit, give the best-under-budget and name what was cut."
 
 **Acceptance criteria** — the professional form of "definition of done":
+- 🔰 "Done means: the room is packed, the car is loaded, and nothing's left on the counter. Check against that before you say we're ready."
 - 🏗️ "Done means: all listed tests pass, no new public API, README updated.
   Self-check against these before reporting done."
 
@@ -272,6 +293,7 @@ beats a guess here."
 
 **"distinguish fact from inference from assumption"** — forces claim
 labeling.
+- 🔰 "Which of these symptoms did the doctor actually say, and which are you guessing might be related?"
 - 🏗️ "Tag each claim [doc] (in the provided material), [derived], or
   [prior knowledge] — I'll treat the third class as unverified."
 
@@ -289,12 +311,17 @@ devastating on recommendations.
 
 **"which part are you least sure of?"** — comparative confidence, which is
 better calibrated than absolute confidence.
+- 🔰 "Of everything you just told me about the used car, what's the part you're least sure of?"
+- 🏗️ "Of this incident timeline, which timestamp are you least confident in?"
 
-**"don't guess — ask"** — inverts default gap-filling: "If any requirement
-is ambiguous, ask before implementing."
+**"don't guess — ask"** — inverts default gap-filling.
+- 🔰 "If you're not sure which size I meant, ask — don't just pick the middle one."
+- 🏗️ "If any requirement is ambiguous, ask before implementing."
 
 **"check that against the actual file/source"** — re-grounds in the
 artifact instead of my memory of it; in long sessions those diverge.
+- 🔰 "Don't go from memory — check the actual insurance policy PDF for what's covered."
+- 🏗️ "Don't trust your summary of the schema — check it against the actual migration file."
 
 **"be honest, not agreeable"** — counters the documented lean toward
 validation. Crucially: don't signal the answer you want, or you'll get it.
@@ -305,6 +332,8 @@ validation. Crucially: don't signal the answer you want, or you'll get it.
 
 **"argue both sides, then rule"** — forces genuine engagement with the
 disfavored side before a verdict; catches motivated one-sidedness.
+- 🔰 "Argue for renting, then argue for buying, then tell me which one actually wins for my situation."
+- 🏗️ "Argue for the monolith, then for microservices, then rule — don't just pick the trendier one."
 
 **"what am I not asking?"** — invites the unknown unknowns; ends more
 expert sessions well than any other closing question.
@@ -320,6 +349,7 @@ expert sessions well than any other closing question.
 **Delimiters** — fence your material off from your instructions:
 `<code>…</code>`, triple backticks, `---`. Not cosmetic: it keeps *content*
 from being read as *commands* (see prompt injection, Part VII).
+- 🔰 "Everything between the dashes below is the actual email — don't treat any of it as instructions to you."
 - 🏗️ Multiple materials get named tags — `<spec>`, `<impl>`, `<error>` —
   then instructions can reference them by name: "reconcile <impl> against
   <spec>."
@@ -327,8 +357,12 @@ from being read as *commands* (see prompt injection, Part VII).
 **Material first, question last** — for long documents, paste the material
 *before* the ask; instructions adjacent to the answer-writing position get
 the most faithful execution. (Corollary of "lost in the middle.")
+- 🔰 "Here's the whole lease [pasted]. Now — does this clause let them raise rent mid-year?"
+- 🏗️ "Here's the full stack trace [pasted]. Now — what's actually throwing on line 40?"
 
 **Labels over prose** — three tagged blocks beat one interleaved paragraph.
+- 🔰 "Give me the pros in one list and the cons in another — not one paragraph mixing them."
+- 🏗️ "Label the breaking changes separately from the deprecations — don't interleave them in prose."
 
 **The example (few-shot)** — the single most powerful syntax that exists.
 One input→output pair defines a task better than a paragraph; 2–3 spanning
@@ -339,24 +373,36 @@ the edge cases ≈ a specification.
 
 **Counter-examples** — show the near-miss you *don't* want; defines the
 boundary from the other side. "Like A, not like B" is a two-sided spec.
+- 🔰 "Like a firm handshake, not like a bone-crushing grip — that's the tone I want."
+- 🏗️ "Like the retry logic in `fetchUser`, not like `fetchOrders` — that one over-retries."
 
 **Templates / prefill** — start the answer's structure yourself and have
 me complete it; the strongest format control that exists.
+- 🔰 "Start the thank-you note with 'Dear [Name], I wanted to...' and finish it from there."
+- 🏗️ "Start the JSON response with `{"status":` and complete the object from there."
 
 **"Here's what I've tried / ruled out"** — prunes the search space; earns
 an answer at your level instead of the FAQ.
+- 🔰 "I've already tried restarting the router and unplugging the modem — don't suggest those again."
+- 🏗️ "I've already ruled out a race condition and checked the connection pool size — start past those."
 
 **Audience declaration** — the highest-compression sentence in the
 language: "explain to a [X] who knows [Y] but not [Z]."
+- 🔰 "Explain it to me like I've never opened a spreadsheet in my life."
+- 🏗️ "Explain it to someone who knows Kubernetes but has never touched Terraform."
 
 **Artifact naming** — name the things we're iterating on ("call this
 draft-A") so later references ("merge draft-A's opening with draft-C's
 ending") are unambiguous.
+- 🔰 "Call this version 'the beach one' so I can just say 'shorten the beach one' later."
+- 🏗️ "Call this 'draft-A' so later I can say 'merge draft-A's error handling into draft-C.'"
 
 **Roles, honestly assessed** — "as a security auditor" shifts vocabulary,
 priorities, and *what gets looked for*. It selects a distribution; it does
 not add knowledge. Use for the selection, skip the "world's greatest"
 inflation — competence adjectives add nothing.
+- 🔰 "Read this as a skeptical home inspector would — not as 'the world's greatest inspector.'"
+- 🏗️ "Review this as a security auditor — not as 'the best security expert in the world.'"
 
 ---
 
@@ -369,29 +415,47 @@ inflation — competence adjectives add nothing.
 
 **"that's wrong because…"** — corrections carry reasons; reasons update my
 model of the task. Bare "redo it" is a coin flip.
+- 🔰 "That's wrong — the flight is at 6 AM, not 6 PM, because I already checked the ticket."
+- 🏗️ "That's wrong — the cache is per-request, not global, because `New()` runs inside the handler."
 
 **"tighten"** — same content, fewer words, no new ideas.
+- 🔰 "Tighten this toast — same message, half the length."
+- 🏗️ "Tighten this incident summary — same facts, no new claims, half the words."
 
 **"go again, but…"** — retry with exactly one delta; the experimental
 method applied to conversation.
+- 🔰 "Go again, but warmer in tone — everything else about the message was right."
+- 🏗️ "Go again, but with the timeout doubled — that's the only variable I want changed."
 
 **"give me two contrasting versions"** — A/B on purpose; picking between
 real alternatives beats critiquing one.
+- 🔰 "Give me two really different taglines — not two versions of the same one."
+- 🏗️ "Give me two genuinely different architectures — not one with a renamed variable."
 
 **"regenerate only section 2"** — surgical regeneration; protects the
 parts that already work from revision drift.
+- 🔰 "Regenerate only the middle paragraph — the opening and closing are already right."
+- 🏗️ "Regenerate only the error-handling block — leave the happy path untouched."
 
 **The ratchet** — explicitly lock approved parts as you go ("intro is
 final; do not revisit") so progress only accumulates.
+- 🔰 "The guest list is final — don't revisit it, just keep working on the seating chart."
+- 🏗️ "The API shape is locked — don't revisit it while we iterate on the internals."
 
 **"summarize where we are"** — the checkpoint: consolidates decisions,
 exposes drift, and produces a portable state block for a fresh session.
+- 🔰 "Summarize where we landed on the wedding venue before we move on to catering."
+- 🏗️ "Summarize the decisions and open questions so far — I'm starting a fresh session with it."
 
 **"disregard the earlier constraint about X"** — constraints linger
 silently; retire them by name.
+- 🔰 "Disregard the earlier 'vegetarian only' constraint — we added a guest who eats meat."
+- 🏗️ "Disregard the earlier 'no new dependencies' constraint — we approved one this morning."
 
 **"before you continue—"** — the interrupt. Steering mid-course is an
 order of magnitude cheaper than repairing after.
+- 🔰 "Before you continue — I actually meant the red one, not the blue one. Adjust from here."
+- 🏗️ "Before you continue — that's the wrong table, it's `orders_v2` now. Redirect from here."
 
 ---
 
