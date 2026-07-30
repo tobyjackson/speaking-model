@@ -395,7 +395,7 @@ order of magnitude cheaper than repairing after.
 
 ---
 
-# Part VII — The Jargon (expanded)
+# Part VII — The Jargon
 
 **token** — the unit read/written (~¾ word). Cost and limits denominate
 here. · **context window** — working memory; a desk, not a database. ·
@@ -444,7 +444,7 @@ in-context or on disk.
 
 ---
 
-# Part VIII — Anti-Patterns (expanded)
+# Part VIII — Anti-Patterns
 
 **"Don't hallucinate."** — No such switch exists. Use Part IV: grounding,
 quote requirements, uncertainty licensing.
@@ -515,7 +515,7 @@ almost always CONTEXT, CONSTRAINTS, or VERIFICATION.
 
 ---
 
-# Part X — Session Design (new)
+# Part X — Session Design
 
 Single prompts are sentences; sessions are paragraphs. Experts design them.
 
@@ -542,7 +542,7 @@ the cheapest place to be precise, the most expensive place to be sloppy.
 
 ---
 
-# Part XI — Speaking Aloud (new)
+# Part XI — Speaking Aloud
 
 Voice removes formatting, so the work delimiters did moves into words:
 
@@ -561,7 +561,7 @@ Voice removes formatting, so the work delimiters did moves into words:
 
 ---
 
-# Part XII — Meta-Prompting (new)
+# Part XII — Meta-Prompting
 
 The most senior move: use the model on the conversation itself.
 
@@ -586,6 +586,10 @@ Limit, stated honestly: self-review shares blind spots with the self that
 wrote the draft. It catches checkable failures (format, missed
 constraints) far better than judgment failures. External oracles — tests,
 sources, you — outrank self-critique. Always.
+
+**Operationalized.** `for-agents/` in this repo turns the Grammar into
+working Claude Code config: two lines for your `CLAUDE.md` and a
+`/rewrite` command that does this rewrite for you, on demand.
 
 ---
 
