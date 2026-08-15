@@ -21,7 +21,7 @@ Fluency = supplying precise evidence. Everything below is technique.
 
 ---
 
-# Part I — The Verbs
+## Part I — The Verbs
 
 The operative verb is the most load-bearing word in a request. Not
 synonyms — contracts.
@@ -168,7 +168,7 @@ retrieval-practice verb; far stronger for learning than re-reading.
 
 ---
 
-# Part II — The Modifiers (adverbs of thought)
+## Part II — The Modifiers (adverbs of thought)
 
 **"think step by step" / "reason it out first"** — request visible
 intermediate reasoning; measurably helps multi-step problems.
@@ -229,7 +229,7 @@ Instant, underused.
 
 ---
 
-# Part III — Constraint Grammar
+## Part III — Constraint Grammar
 
 **must / never / always / only** — hard limits in hard words, enumerated.
 Implied constraints fail; enumerated prohibitions succeed.
@@ -280,7 +280,7 @@ guesses; numbers are contracts.
 
 ---
 
-# Part IV — Epistemic Controls
+## Part IV — Epistemic Controls
 
 The truthfulness toolkit — highest value per word in the language.
 
@@ -344,7 +344,7 @@ expert sessions well than any other closing question.
 
 ---
 
-# Part V — Context Syntax (how to hand me things)
+## Part V — Context Syntax (how to hand me things)
 
 **Delimiters** — fence your material off from your instructions:
 `<code>…</code>`, triple backticks, `---`. Not cosmetic: it keeps *content*
@@ -406,7 +406,7 @@ inflation — competence adjectives add nothing.
 
 ---
 
-# Part VI — The Iteration Loop
+## Part VI — The Iteration Loop
 
 **"keep A, change B"** — the revision atom; diff-based feedback.
 - 🔰 "The tone is right; cut it to half the length."
@@ -459,7 +459,7 @@ order of magnitude cheaper than repairing after.
 
 ---
 
-# Part VII — The Jargon
+## Part VII — The Jargon
 
 **token** — the unit read/written (~¾ word). Cost and limits denominate
 here. · **context window** — working memory; a desk, not a database. ·
@@ -508,7 +508,7 @@ in-context or on disk.
 
 ---
 
-# Part VIII — Anti-Patterns
+## Part VIII — Anti-Patterns
 
 **"Don't hallucinate."** — No such switch exists. Use Part IV: grounding,
 quote requirements, uncertainty licensing.
@@ -560,7 +560,7 @@ weights ("time over money, 2:1, here") and the ranking becomes computable.
 
 ---
 
-# Part IX — The Grammar of a Complete Request
+## Part IX — The Grammar of a Complete Request
 
 ```
 [AUDIENCE/ROLE]   Reviewing as a security auditor;
@@ -579,7 +579,7 @@ almost always CONTEXT, CONSTRAINTS, or VERIFICATION.
 
 ---
 
-# Part X — Session Design
+## Part X — Session Design
 
 Single prompts are sentences; sessions are paragraphs. Experts design them.
 
@@ -606,7 +606,7 @@ the cheapest place to be precise, the most expensive place to be sloppy.
 
 ---
 
-# Part XI — Speaking Aloud
+## Part XI — Speaking Aloud
 
 Voice removes formatting, so the work delimiters did moves into words:
 
@@ -625,7 +625,7 @@ Voice removes formatting, so the work delimiters did moves into words:
 
 ---
 
-# Part XII — Meta-Prompting
+## Part XII — Meta-Prompting
 
 The most senior move: use the model on the conversation itself.
 
@@ -669,7 +669,7 @@ mind-reading.
 
 ---
 
-# Appendix — Further Study
+## Appendix — Further Study
 
 **Primary documentation (living, authoritative):**
 - Anthropic prompt engineering guide —
