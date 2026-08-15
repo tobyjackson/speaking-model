@@ -1,1 +1,8 @@
 url: https://tobyjackson.com
+# Project site: served from tobyjackson.com/speaking-model/, so relative_url and
+# absolute_url need the prefix to produce correct asset and canonical URLs.
+baseurl: /speaking-model
+
+# The design catalog is source, not site output.
+exclude:
+  - design

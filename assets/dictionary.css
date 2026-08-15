@@ -1,0 +1,572 @@
+/* Speaking Model — A Practitioner's Dictionary
+   Typeset as a reference volume: a paper sheet, a marginal thumb index, and a
+   live guide-word running head. Extends the type and colour already set by
+   /cheatsheet/ and /linter/ so the three pages read as one book.
+
+   Layers, in cascade order: tokens → base → layout → text → components.
+   Components consume semantic tokens only; the primitive scale is private. */
+
+@layer tokens, base, layout, text, components;
+
+/* ─────────────────────────────────────────────────────────────────────────
+   TOKENS
+   ───────────────────────────────────────────────────────────────────────── */
+@layer tokens {
+  :root {
+    /* Primitives — the sub-site's existing ink/paper/rubric set, extended.
+       Contrast is recorded in design/DESIGN.md and verified there. */
+    --paper-000: #fdfcf9;
+    --paper-100: #fbfaf5;
+    --paper-200: #e9e6df;
+    --paper-300: #d8d4cc;
+    --ink-900:   #1c1a17;
+    --ink-700:   #3d382f;
+    --ink-500:   #5a5f66;
+    --rubric-600:#8e2f2a;
+
+    --night-900: #100f0c;
+    --night-800: #191813;
+    --night-700: #211f19;
+    --night-600: #3a372f;
+    --bone-100:  #e4dccd;
+    --bone-300:  #a29888;
+    --ember-300: #e0937c;
+
+    /* Semantic aliases — the only names the rest of this file may use. */
+    --color-shell:      var(--paper-200);
+    --color-surface:    var(--paper-000);
+    --color-specimen:   var(--paper-100);
+    --color-ink:        var(--ink-900);
+    --color-ink-soft:   var(--ink-700);
+    --color-meta:       var(--ink-500);
+    --color-accent:     var(--rubric-600);
+    --color-rule:       var(--paper-300);
+    --color-rule-heavy: var(--ink-900);
+    --shadow-sheet:     0 1px 20px rgba(28, 26, 23, 0.10);
+
+    /* Type */
+    --face-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --face-text:    'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --face-utility: 'Archivo Narrow', 'Helvetica Neue', Arial, sans-serif;
+    --face-mono:    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+    /* Fluid body size, 17px → 19px. Everything else is a ratio of it. */
+    --size-text: clamp(1.0625rem, 1.006rem + 0.28vw, 1.1875rem);
+    --leading-text: 1.62;
+
+    /* Space */
+    --space-1: 0.35rem;
+    --space-2: 0.7rem;
+    --space-3: 1.1rem;
+    --space-4: 1.75rem;
+    --space-5: 2.75rem;
+    --space-6: 4rem;
+
+    /* Structure */
+    --measure: 40rem;    /* ≈ 68 characters at the body size */
+    --rail-w: 14.5rem;
+    --band-h: 3rem;
+  }
+
+  /* Dark is a system-driven theme, not a widget: neither sibling page has a
+     toggle, so none is invented here. Semantic tokens are the only thing that
+     changes — no rule below this block is theme-aware. */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-shell:      var(--night-900);
+      --color-surface:    var(--night-800);
+      --color-specimen:   var(--night-700);
+      --color-ink:        var(--bone-100);
+      --color-ink-soft:   var(--bone-300);
+      --color-meta:       var(--bone-300);
+      --color-accent:     var(--ember-300);
+      --color-rule:       var(--night-600);
+      --color-rule-heavy: var(--bone-300);
+      --shadow-sheet:     none;
+      color-scheme: dark;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BASE
+   ───────────────────────────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    background: var(--color-shell);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--face-text);
+    font-size: var(--size-text);
+    line-height: var(--leading-text);
+    color: var(--color-ink);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a { color: var(--color-accent); }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .skiplink {
+    position: absolute;
+    left: -100vw;
+    top: 0;
+    z-index: 20;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--face-utility);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--color-rule-heavy);
+  }
+  .skiplink:focus { left: 0.5rem; top: 0.5rem; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LAYOUT — running head, sheet, rail, colophon
+   ───────────────────────────────────────────────────────────────────────── */
+@layer layout {
+
+  /* The guide-word band. A printed dictionary tells you where you are at the
+     top of every page; this one updates as you scroll. */
+  .runninghead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--color-shell);
+    border-bottom: 1px solid var(--color-rule-heavy);
+  }
+
+  .runninghead__inner {
+    max-width: 68rem;
+    margin: 0 auto;
+    min-height: var(--band-h);
+    padding: 0 1.25rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .wordmark {
+    font-family: var(--face-utility);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    text-decoration: none;
+    padding: 0.85rem 0;
+    white-space: nowrap;
+  }
+  .wordmark__dot { color: var(--color-accent); }
+  .wordmark:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+
+  .guideword {
+    margin: 0;
+    padding: 0.9rem 0;
+    font-family: var(--face-utility);
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .guideword::before { content: "▸ "; color: var(--color-meta); }
+
+  /* The volume: one sheet of paper on the shell, ruled into margin and text. */
+  .volume {
+    max-width: 68rem;
+    margin: 1.75rem auto 0;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sheet);
+    display: grid;
+    grid-template-columns: var(--rail-w) minmax(0, 1fr);
+    column-gap: 0;
+    padding: 2.5rem 3rem 3.5rem;
+  }
+
+  /* Marginal thumb index: stays with the reader, the way a thumb index is
+     always under your hand. */
+  .rail {
+    min-width: 0;
+    position: sticky;
+    align-self: start;
+    top: calc(var(--band-h) + 1.25rem);
+    max-height: calc(100vh - var(--band-h) - 3rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .rail__title {
+    margin: 0 0 var(--space-2);
+    font-family: var(--face-utility);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--color-rule-heavy);
+    padding-bottom: 0.3rem;
+  }
+
+  .rail__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .rail__link {
+    display: grid;
+    grid-template-columns: 2.1rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem 0.4rem 0.55rem;
+    min-height: 24px;
+    border-left: 2px solid transparent;
+    font-family: var(--face-utility);
+    font-size: 0.86rem;
+    line-height: 1.28;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .rail__ord {
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-meta);
+    text-align: right;
+  }
+
+  .rail__link:hover { background: var(--color-specimen); }
+  .rail__link:hover .rail__name { text-decoration: underline; text-underline-offset: 0.2em; }
+
+  /* Reading position. Colour is doubled by weight and the marginal tab, so it
+     is never the only signal. */
+  .rail__link[aria-current="true"] {
+    border-left-color: var(--color-accent);
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  .rail__link[aria-current="true"] .rail__ord { color: var(--color-accent); }
+
+  .colophon {
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: 1.5rem 3rem 3rem;
+    font-family: var(--face-utility);
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--color-meta);
+  }
+  .colophon p { margin: 0 0 0.35rem; }
+  .colophon a { color: var(--color-accent); text-underline-offset: 0.2em; }
+  .colophon__note { font-size: 0.75rem; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   TEXT — the document itself. Selectors match kramdown's output, so the
+   markdown source needs no classes and stays editable as prose.
+   ───────────────────────────────────────────────────────────────────────── */
+@layer text {
+  /* The column rule is the divider a printed dictionary uses between index and
+     text; --measure stays exact because the padding is added back to max-width. */
+  .text {
+    max-width: calc(var(--measure) + 3rem);
+    min-width: 0;
+    padding-left: 3rem;
+    border-left: 1px solid var(--color-rule);
+    overflow-wrap: break-word;
+  }
+
+  .text > :first-child { margin-top: 0; }
+
+  /* Title page */
+  .text h1 {
+    font-family: var(--face-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 1.35rem + 2.6vw, 3.05rem);
+    line-height: 1.03;
+    letter-spacing: -0.021em;
+    margin: 0 0 var(--space-2);
+    text-wrap: balance;
+  }
+
+  /* The edition line is an <h2> in the source but a subtitle in fact. */
+  .text h1 + h2 {
+    font-family: var(--face-utility);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    color: var(--color-meta);
+    border: 0;
+    padding: 0;
+    margin: 0 0 var(--space-3);
+  }
+
+  /* …and the note under it. The title page is closed by the first section's own
+     top rule, so this carries no rule of its own. */
+  .text h1 + h2 + p {
+    font-size: 0.94em;
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    margin-bottom: 0;
+  }
+
+  /* Part headings. JS splits "Part IV — Epistemic Controls" into an ordinal
+     line and a name; the plain heading below is the no-JS result. */
+  .text h2 {
+    font-family: var(--face-display);
+    font-weight: 700;
+    font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.7rem);
+    line-height: 1.14;
+    letter-spacing: -0.012em;
+    margin: var(--space-6) 0 var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 2px solid var(--color-rule-heavy);
+    scroll-margin-top: calc(var(--band-h) + 1.25rem);
+    text-wrap: balance;
+  }
+
+  .text .h-ord {
+    display: block;
+    font-family: var(--face-utility);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.3rem;
+  }
+
+  /* A heading's trailing parenthetical is a gloss, not part of the title —
+     set down in the text face so the display line stays the display line. */
+  .text .h-aside {
+    font-family: var(--face-text);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 0.66em;
+    letter-spacing: 0;
+    color: var(--color-meta);
+  }
+
+  .text h3 {
+    font-family: var(--face-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: var(--space-4) 0 var(--space-2);
+    scroll-margin-top: calc(var(--band-h) + 1.25rem);
+  }
+
+  .text p { margin: 0 0 var(--space-3); }
+
+  /* Headwords. Bold in this document always means "this is a term", so every
+     <strong> gets the display face — including Part VII's run-in glossary. */
+  .text strong {
+    font-family: var(--face-display);
+    font-weight: 700;
+    font-size: 1.04em;
+    letter-spacing: -0.004em;
+    color: var(--color-ink);
+  }
+
+  .text em { font-style: italic; }
+
+  /* The one maxim the whole book rests on. */
+  .text blockquote {
+    margin: var(--space-4) 0;
+    padding: 0 0 0 var(--space-3);
+    border-left: 3px solid var(--color-accent);
+    font-size: 1.06em;
+    line-height: 1.48;
+  }
+  .text blockquote p:last-child { margin-bottom: 0; }
+
+  /* Example blocks: the 🔰/🏗️ pairs under each entry, hung off a hairline the
+     way a dictionary hangs citations under a headword. */
+  .text ul,
+  .text ol {
+    list-style: none;
+    margin: 0 0 var(--space-4);
+    padding: 0 0 0 var(--space-3);
+    border-left: 1px solid var(--color-rule);
+  }
+  .text li {
+    margin: 0 0 var(--space-1);
+    font-size: 0.945em;
+    line-height: 1.52;
+    color: var(--color-ink-soft);
+  }
+  .text li:last-child { margin-bottom: 0; }
+  .text li > ul,
+  .text li > ol { margin-top: var(--space-1); }
+
+  /* Long reference URLs in the Appendix must not blow out the measure. */
+  .text a {
+    color: var(--color-accent);
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    text-underline-offset: 0.14em;
+    overflow-wrap: anywhere;
+  }
+  .text a:hover { text-decoration-color: currentColor; }
+
+  /* Specimen block — Part IX's request template. */
+  .text pre {
+    margin: var(--space-3) 0 var(--space-4);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-specimen);
+    border: 1px solid var(--color-rule);
+    border-left: 3px solid var(--color-rule-heavy);
+    font-family: var(--face-mono);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    tab-size: 2;
+  }
+  .text code {
+    font-family: var(--face-mono);
+    font-size: 0.85em;
+    background: var(--color-specimen);
+    border: 1px solid var(--color-rule);
+    padding: 0.05em 0.3em;
+  }
+  .text pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  /* The source's --- separators are already said by the heading rules above. */
+  .text hr {
+    border: 0;
+    height: 0;
+    margin: 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   COMPONENTS — the contents drawer, which only exists once JS says so
+   ───────────────────────────────────────────────────────────────────────── */
+@layer components {
+
+  /* Injected by dictionary.js, so no-JS readers never meet a dead button. */
+  .contents-toggle {
+    display: none;
+    font-family: var(--face-utility);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    background: none;
+    border: 1px solid var(--color-rule-heavy);
+    padding: 0.45rem 0.7rem;
+    min-height: 30px;
+    cursor: pointer;
+    align-self: center;
+  }
+  .contents-toggle[aria-expanded="true"] {
+    background: var(--color-ink);
+    color: var(--color-surface);
+  }
+
+  /* ── Below the two-column threshold ───────────────────────────────────── */
+  @media (max-width: 61.99rem) {
+    .volume {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 1.75rem 1.5rem 2.5rem;
+      margin-top: 0;
+    }
+    .colophon { padding: 1.25rem 1.5rem 2.5rem; }
+
+    /* One column: no column rule, no measure inset. */
+    .text {
+      max-width: none;
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    /* No JS: the contents stay in the flow, as a book's contents page does. */
+    .rail {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      margin-bottom: var(--space-4);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--color-rule);
+    }
+    .rail__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+      gap: 0 var(--space-3);
+    }
+
+    /* With JS: the same list becomes a drawer under the running head. */
+    [data-enhanced="true"] .contents-toggle { display: block; }
+
+    [data-enhanced="true"] .rail {
+      position: fixed;
+      top: var(--band-h);
+      left: 0;
+      right: 0;
+      z-index: 9;
+      margin: 0;
+      padding: 1rem 1.5rem 1.5rem;
+      max-height: min(70vh, 34rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      background: var(--color-surface);
+      border-bottom: 2px solid var(--color-rule-heavy);
+      box-shadow: var(--shadow-sheet);
+    }
+    [data-enhanced="true"] .rail[hidden] { display: none; }
+
+    [data-enhanced="true"] .rail__link { padding: 0.55rem 0.5rem; min-height: 34px; }
+  }
+
+  @media (max-width: 30rem) {
+    .guideword { font-size: 0.68rem; letter-spacing: 0.1em; }
+    .wordmark { font-size: 0.75rem; letter-spacing: 0.13em; }
+    .volume { padding: 1.5rem 1.15rem 2rem; }
+    .colophon { padding: 1rem 1.15rem 2rem; }
+    [data-enhanced="true"] .rail__list { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .rail__link { transition: color 0.12s ease, border-color 0.12s ease; }
+  }
+
+  @media print {
+    .runninghead, .rail, .skiplink, .contents-toggle { display: none; }
+    html { background: #fff; }
+    .volume { display: block; box-shadow: none; max-width: none; padding: 0; }
+    .text { max-width: none; }
+    .text h2 { break-after: avoid; }
+    .text a { text-decoration: none; }
+  }
+}

@@ -1,3 +1,9 @@
+---
+layout: dictionary
+title: "Speaking Model: A Practitioner's Dictionary"
+description: "A practitioner's dictionary for the working language between humans and AI models — verbs as contracts, the grammar of a complete request, epistemic controls, and the anti-patterns that feel powerful and aren't."
+---
+
 # Speaking Model: A Practitioner's Dictionary
 ## Second Edition — expanded, with dual-level examples and further study
 
