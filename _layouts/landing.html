@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="{{ page.lang | default: 'en' }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page.title | default: site.title }}</title>
+{%- if page.description %}
+<meta name="description" content="{{ page.description }}">
+{%- endif %}
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+<meta property="og:title" content="{{ page.title | default: site.title }}">
+{%- if page.description %}
+<meta property="og:description" content="{{ page.description }}">
+{%- endif %}
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Identical font request to /cheatsheet/, /linter/ and the full text so the four
+     pages share one cache entry. -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Archivo+Narrow:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ '/assets/dictionary.css' | relative_url }}">
+{%- include head-custom.html -%}
+</head>
+<body>
+<a class="skiplink" href="#text">Skip to the text</a>
+
+<!-- The band the whole sub-site wears. The full text makes its right-hand side a
+     live guide word; a title page has no running head, so here it holds the three
+     editions instead — the same job the cheat sheet's printed guide words do. -->
+<header class="runninghead runninghead--leaf">
+  <div class="runninghead__inner">
+    <span class="wordmark wordmark--current">speaking model<span class="wordmark__dot">.</span></span>
+    <nav class="editions" aria-label="Editions">
+      <a href="{{ '/speaking-model.html' | relative_url }}">full text</a>
+      <a href="{{ '/cheatsheet/' | relative_url }}">cheat sheet</a>
+      <a href="{{ '/linter/' | relative_url }}">linter</a>
+    </nav>
+  </div>
+</header>
+
+<main class="leaf frontis" id="text">
+{%- comment -%}
+  The page is README.md, rendered. One element is re-typeset rather than restyled:
+  the Parts table becomes a printed contents register, because a table's cell grid
+  can't hang a roman ordinal in the margin and can't link a row into the book.
+
+  Everything below parses the *rendered* document, so the prose in README.md needs
+  no classes and stays a normal README on GitHub. Coupling to watch (also logged in
+  design/DESIGN.md): this assumes README.md contains exactly one table, and that
+  its first column reads "<ordinal> — <name>".
+{%- endcomment -%}
+{%- assign map_split = content | split: '<table>' -%}
+{%- assign lead = map_split[0] -%}
+{%- assign map_table = '' -%}
+{%- assign rest = '' -%}
+{%- if map_split.size > 1 -%}
+  {%- assign tail_split = map_split[1] | split: '</table>' -%}
+  {%- assign map_table = tail_split[0] -%}
+  {%- assign rest = tail_split[1] -%}
+{%- endif -%}
+
+{%- comment -%}
+  Section ids are taken from the book itself, converted at build time, so a row can
+  never link to an anchor that isn't there and can never go stale when a Part is
+  renamed. Matching is on the "part-<ordinal>--" prefix, which is unique across all
+  of them ("part-i--" does not match "part-ii--"); a row with no match renders as
+  plain text rather than a broken link.
+{%- endcomment -%}
+{%- assign book_ids = '' -%}
+{%- for p in site.pages -%}
+  {%- if p.path == 'speaking-model.md' -%}
+    {%- assign book_chunks = p.content | markdownify | split: '<h2 id="' -%}
+    {%- for chunk in book_chunks offset:1 -%}
+      {%- assign book_ids = book_ids | append: chunk | split: '"' | first | append: ' ' -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign book_id_list = book_ids | split: ' ' -%}
+
+{{ lead }}
+
+{%- if map_table != '' -%}
+  {%- assign head_cells = map_table | split: '<th>' -%}
+  {%- assign head_ord = head_cells[1] | split: '</th>' | first | default: 'Part' -%}
+  {%- assign head_name = head_cells[2] | split: '</th>' | first | default: 'What it covers' -%}
+  <div class="register">
+    <p class="register__head" aria-hidden="true">
+      <span class="register__head-ord">{{ head_ord }}</span>
+      <span>{{ head_name }}</span>
+    </p>
+    <dl class="register__list">
+    {%- assign rows = map_table | split: '<tr>' -%}
+    {%- for row in rows -%}
+      {%- assign cells = row | split: '<td>' -%}
+      {%- if cells.size > 2 -%}
+        {%- assign label = cells[1] | split: '</td>' | first | strip -%}
+        {%- assign gloss = cells[2] | split: '</td>' | first | strip -%}
+        {%- assign label_bits = label | split: ' — ' -%}
+        {%- if label_bits.size > 1 -%}
+          {%- assign ordinal = label_bits[0] | strip -%}
+          {%- assign name = label_bits[1] | strip -%}
+          {%- assign prefix = 'part-' | append: ordinal | downcase | append: '--' -%}
+        {%- else -%}
+          {%- assign ordinal = '' -%}
+          {%- assign name = label -%}
+          {%- assign prefix = label | downcase | append: '--' -%}
+        {%- endif -%}
+        {%- assign anchor = '' -%}
+        {%- assign prefix_len = prefix | size -%}
+        {%- for bid in book_id_list -%}
+          {%- assign bid_head = bid | slice: 0, prefix_len -%}
+          {%- if bid_head == prefix -%}
+            {%- assign anchor = bid -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      <div class="register__item">
+        <dt class="register__term">
+        {%- if anchor != '' -%}
+          <a class="register__link" href="{{ '/speaking-model.html' | relative_url }}#{{ anchor }}">
+            <span class="register__ord">{{ ordinal }}</span>
+            <span class="register__name">{{ name }}</span>
+          </a>
+        {%- else -%}
+          <span class="register__link">
+            <span class="register__ord">{{ ordinal }}</span>
+            <span class="register__name">{{ name }}</span>
+          </span>
+        {%- endif -%}
+        </dt>
+        <dd class="register__gloss">{{ gloss }}</dd>
+      </div>
+      {%- endif -%}
+    {%- endfor -%}
+    </dl>
+  </div>
+{%- endif -%}
+
+{{ rest }}
+</main>
+
+<footer class="colophon colophon--leaf">
+  <p class="colophon__nav">
+    <a href="{{ '/speaking-model.html' | relative_url }}">full text</a>
+    &nbsp;·&nbsp; <a href="{{ '/cheatsheet/' | relative_url }}">cheat sheet</a>
+    &nbsp;·&nbsp; <a href="{{ '/linter/' | relative_url }}">linter</a>
+    &nbsp;·&nbsp; <a href="https://github.com/tobyjackson/speaking-model">vault &amp; source</a>
+  </p>
+  <p class="colophon__note">
+    Set in Fraunces, Source Serif&nbsp;4, and Archivo Narrow.
+  </p>
+</footer>
+</body>
+</html>
