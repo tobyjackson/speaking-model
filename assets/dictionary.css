@@ -1,7 +1,15 @@
 /* Speaking Model — A Practitioner's Dictionary
-   Typeset as a reference volume: a paper sheet, a marginal thumb index, and a
-   live guide-word running head. Extends the type and colour already set by
-   /cheatsheet/ and /linter/ so the three pages read as one book.
+   One stylesheet for the two Jekyll-rendered pages of the sub-site:
+
+     /speaking-model.html  .text     the full text, typeset as a reference volume
+                                     — paper sheet, marginal thumb index, live
+                                     guide-word running head
+     /                     .frontis  the landing page, typeset as the volume's
+                                     title page — masthead, contents register,
+                                     colophon; no rail, nothing live
+
+   Both extend the type and colour already set by /cheatsheet/ and /linter/ so
+   the four pages read as one book.
 
    Layers, in cascade order: tokens → base → layout → text → components.
    Components consume semantic tokens only; the primitive scale is private. */
@@ -65,6 +73,7 @@
     /* Structure */
     --measure: 40rem;    /* ≈ 68 characters at the body size */
     --rail-w: 14.5rem;
+    --leaf-w: 46rem;     /* the single-column sheet: --measure plus its margins */
     --band-h: 3rem;
   }
 
@@ -374,7 +383,8 @@
     color: var(--color-meta);
   }
 
-  .text h3 {
+  .text h3,
+  .frontis h3 {
     font-family: var(--face-display);
     font-weight: 700;
     font-size: 1.1rem;
@@ -382,11 +392,14 @@
     scroll-margin-top: calc(var(--band-h) + 1.25rem);
   }
 
-  .text p { margin: 0 0 var(--space-3); }
+  .text p,
+  .frontis p { margin: 0 0 var(--space-3); }
 
   /* Headwords. Bold in this document always means "this is a term", so every
-     <strong> gets the display face — including Part VII's run-in glossary. */
-  .text strong {
+     <strong> gets the display face — including Part VII's run-in glossary, and
+     the audience entries on the landing page, which are built the same way. */
+  .text strong,
+  .frontis strong {
     font-family: var(--face-display);
     font-weight: 700;
     font-size: 1.04em;
@@ -394,45 +407,54 @@
     color: var(--color-ink);
   }
 
-  .text em { font-style: italic; }
+  .text em,
+  .frontis em { font-style: italic; }
 
-  /* The one maxim the whole book rests on. */
-  .text blockquote {
+  /* The one maxim the whole book rests on — set identically on both pages. */
+  .text blockquote,
+  .frontis blockquote {
     margin: var(--space-4) 0;
     padding: 0 0 0 var(--space-3);
     border-left: 3px solid var(--color-accent);
     font-size: 1.06em;
     line-height: 1.48;
   }
-  .text blockquote p:last-child { margin-bottom: 0; }
+  .text blockquote p:last-child,
+  .frontis blockquote p:last-child { margin-bottom: 0; }
 
   /* Example blocks: the 🔰/🏗️ pairs under each entry, hung off a hairline the
      way a dictionary hangs citations under a headword. */
   .text ul,
-  .text ol {
+  .text ol,
+  .frontis ul,
+  .frontis ol {
     list-style: none;
     margin: 0 0 var(--space-4);
     padding: 0 0 0 var(--space-3);
     border-left: 1px solid var(--color-rule);
   }
-  .text li {
+  .text li,
+  .frontis li {
     margin: 0 0 var(--space-1);
     font-size: 0.945em;
     line-height: 1.52;
     color: var(--color-ink-soft);
   }
-  .text li:last-child { margin-bottom: 0; }
+  .text li:last-child,
+  .frontis li:last-child { margin-bottom: 0; }
   .text li > ul,
   .text li > ol { margin-top: var(--space-1); }
 
   /* Long reference URLs in the Appendix must not blow out the measure. */
-  .text a {
+  .text a,
+  .frontis a {
     color: var(--color-accent);
     text-decoration-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
     text-underline-offset: 0.14em;
     overflow-wrap: anywhere;
   }
-  .text a:hover { text-decoration-color: currentColor; }
+  .text a:hover,
+  .frontis a:hover { text-decoration-color: currentColor; }
 
   /* Specimen block — Part IX's request template. */
   .text pre {
@@ -447,7 +469,8 @@
     overflow-x: auto;
     tab-size: 2;
   }
-  .text code {
+  .text code,
+  .frontis code {
     font-family: var(--face-mono);
     font-size: 0.85em;
     background: var(--color-specimen);
@@ -562,11 +585,283 @@
   }
 
   @media print {
-    .runninghead, .rail, .skiplink, .contents-toggle { display: none; }
+    .runninghead, .rail, .skiplink, .contents-toggle, .editions { display: none; }
     html { background: #fff; }
+    .leaf { box-shadow: none; max-width: none; padding: 0; }
+    .register__link { text-decoration: none; }
     .volume { display: block; box-shadow: none; max-width: none; padding: 0; }
     .text { max-width: none; }
     .text h2 { break-after: avoid; }
     .text a { text-decoration: none; }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LANDING — "/", the volume's title page.
+
+   Same tokens, same faces, one structural difference: a narrower sheet and no
+   marginal index. A short page has nothing to index, so the guide-word/rail
+   mechanism is not carried over — the band holds the three editions instead,
+   the way the cheat sheet's printed guide words do.
+   ───────────────────────────────────────────────────────────────────────── */
+@layer layout {
+
+  /* Band text aligns to the narrower sheet's text column: leaf width, less the
+     leaf's 3rem side padding, plus the band's own 1.25rem. */
+  .runninghead--leaf .runninghead__inner { max-width: calc(var(--leaf-w) - 3.5rem); }
+
+  /* Current page: named, not linked. */
+  .wordmark--current { cursor: default; }
+
+  .editions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0 0.95rem;
+    font-family: var(--face-utility);
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    min-width: 0;
+  }
+  .editions a {
+    position: relative;
+    padding: 0.9rem 0;
+    color: var(--color-ink);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  /* Separator belongs to the gap, not to either word. */
+  .editions a + a::before {
+    content: "·";
+    position: absolute;
+    left: -0.58rem;
+    color: var(--color-meta);
+  }
+  .editions a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  /* One sheet, one column. */
+  .leaf {
+    max-width: var(--leaf-w);
+    margin: 1.75rem auto 0;
+    padding: 3rem 3rem 3.5rem;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sheet);
+  }
+
+  .colophon--leaf {
+    max-width: var(--leaf-w);
+    padding: 1.5rem 3rem 3rem;
+  }
+}
+
+@layer text {
+
+  .frontis { overflow-wrap: break-word; }
+  .frontis > :first-child { margin-top: 0; }
+
+  /* The masthead is the page's one loud voice; everything under it is set
+     quiet on purpose. */
+  .frontis h1 {
+    font-family: var(--face-display);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 1.5rem + 3.6vw, 3.8rem);
+    line-height: 0.98;
+    letter-spacing: -0.028em;
+    margin: 0 0 var(--space-2);
+    text-wrap: balance;
+  }
+
+  /* Subtitle. A subtitle is not a section heading, so in the source it is an
+     italic line rather than a rank of heading — which keeps the page's outline
+     honest (h1 then eight h2 sections) and keeps the title the only display
+     line above the rule. */
+  .frontis h1 + p {
+    font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.24rem);
+    line-height: 1.34;
+    color: var(--color-ink-soft);
+    margin: 0 0 var(--space-4);
+    padding: 0 0 var(--space-3);
+    border-bottom: 2px solid var(--color-rule-heavy);
+    text-wrap: balance;
+  }
+
+  /* Lead paragraph, one step up from the body. */
+  .frontis h1 + p + p {
+    font-size: 1.06em;
+    line-height: 1.55;
+  }
+
+  /* Section heads. Eight short sections set in display type would read as eight
+     competing titles; as rubric labels they read as what they are — the divisions
+     of one page of front matter. Same device as the cheat sheet's column heads. */
+  .frontis h2 {
+    font-family: var(--face-utility);
+    font-weight: 600;
+    font-size: 0.74rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--color-rule-heavy);
+    padding-bottom: 0.3rem;
+    margin: var(--space-5) 0 var(--space-3);
+  }
+
+  /* The fluency test is numbered in the source and the numbers are content, so
+     they are set rather than suppressed — hung in the margin, in the rubric. */
+  .frontis ol { counter-reset: habit; }
+  .frontis ol > li {
+    counter-increment: habit;
+    position: relative;
+    padding-left: 1.45rem;
+  }
+  .frontis ol > li::before {
+    content: counter(habit);
+    position: absolute;
+    left: 0;
+    top: 0.02em;
+    font-family: var(--face-utility);
+    font-weight: 600;
+    font-size: 0.8em;
+    color: var(--color-accent);
+  }
+
+  /* The source's --- before the closing credit is a real division here. */
+  .frontis hr {
+    border: 0;
+    border-top: 1px solid var(--color-rule);
+    margin: var(--space-5) 0 var(--space-3);
+  }
+
+  /* Closing credit. */
+  .frontis > p:last-child {
+    font-size: 0.88em;
+    color: var(--color-meta);
+    margin-bottom: 0;
+  }
+}
+
+@layer components {
+
+  /* ── The contents register ─────────────────────────────────────────────────
+     The page's signature. README's Parts table, re-typeset as the contents page
+     of a printed volume: the roman ordinal hangs in the margin, the Part name is
+     set as a headword, its gloss sits under it, and each line is a door into
+     that Part of the full text. A table's cell grid can do none of those things,
+     which is the reason the layout rebuilds it. */
+  .register { margin: 0 0 var(--space-4); }
+
+  .register__head {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    column-gap: 0.9rem;
+    margin: 0;
+    padding-bottom: 0.35rem;
+    /* Hairline, not a heavy rule: the section head above already carries one,
+       and two heavy rules an inch apart read as a mistake. */
+    border-bottom: 1px solid var(--color-rule);
+    font-family: var(--face-utility);
+    font-weight: 600;
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-meta);
+  }
+  .register__head-ord { text-align: right; }
+
+  .register__list { margin: 0; }
+
+  .register__item {
+    padding: 0.62rem 0 0.72rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .register__term { margin: 0; }
+
+  .register__link {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    column-gap: 0.9rem;
+    align-items: baseline;
+    min-height: 24px;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .register__ord {
+    font-family: var(--face-utility);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-align: right;
+  }
+
+  .register__name {
+    font-family: var(--face-display);
+    font-weight: 700;
+    font-size: 1.08rem;
+    line-height: 1.22;
+    letter-spacing: -0.008em;
+  }
+
+  a.register__link:hover .register__name {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .register__gloss {
+    margin: 0.12rem 0 0 calc(2.75rem + 0.9rem);
+    font-size: 0.92em;
+    line-height: 1.45;
+    color: var(--color-ink-soft);
+  }
+
+  /* ── Below the sheet's own width ──────────────────────────────────────────
+     There is no second column to collapse, so the page only loses its margins. */
+  @media (max-width: 47rem) {
+    .runninghead--leaf .runninghead__inner { max-width: none; }
+    .leaf {
+      margin-top: 0;
+      padding: 1.75rem 1.5rem 2.5rem;
+    }
+    .colophon--leaf { padding: 1.25rem 1.5rem 2.5rem; }
+  }
+
+  @media (max-width: 30rem) {
+    .leaf { padding: 1.5rem 1.15rem 2rem; }
+    .colophon--leaf { padding: 1rem 1.15rem 2rem; }
+    .editions {
+      font-size: 0.63rem;
+      letter-spacing: 0.09em;
+      gap: 0 0.8rem;
+    }
+    .editions a + a::before { left: -0.5rem; }
+    .register__head,
+    .register__link {
+      grid-template-columns: 2.1rem minmax(0, 1fr);
+      column-gap: 0.7rem;
+    }
+    .register__gloss { margin-left: calc(2.1rem + 0.7rem); }
+  }
+
+  /* At the 320px reflow floor the editions no longer fit beside the wordmark.
+     They stack rather than wrap, because a wrapped line would start with the
+     separator that belongs between two words on the line above. */
+  @media (max-width: 23rem) {
+    .runninghead--leaf .runninghead__inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+    .runninghead--leaf .wordmark { padding: 0.7rem 0 0.1rem; }
+    .editions { justify-content: flex-start; }
+    .editions a { padding: 0.35rem 0 0.7rem; }
   }
 }

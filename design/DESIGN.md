@@ -146,6 +146,65 @@ would be an interruption with no meaning to carry.
 
 ---
 
+## The landing page (`/`)
+
+**Direction: the volume's title page.** The full text is the book's body; `/` is
+its front matter — half-title, subtitle, contents, imprint. Same paper, same
+three faces, same rubric. One structural difference and one only: a narrower
+sheet (`--leaf-w: 46rem`, so the text column is still exactly `--measure`) and no
+marginal index, because a short page has nothing to index.
+
+Nothing on the page is live, so the guide-word mechanism is not carried over. The
+band holds the three editions instead — the same job the cheat sheet's printed
+guide words do, and the only navigation that follows you down the page.
+
+```
+┌────────────────────────────────────────────────────┐
+│ SPEAKING MODEL.       FULL TEXT · CHEAT SHEET · LINTER │ static band
+├────────────────────────────────────────────────────┤
+│ Speaking Model                                      │  Fraunces, ~3.8rem
+│ A practitioner's dictionary for the working…        │  italic subtitle
+│ ═══════════════════════════════════════════════════ │  2px, closes the masthead
+│ There are no magic words for talking to AI…         │  lead
+│ ▌A model completes the document you started.        │
+│ WHO THIS IS FOR ─────────────────────────────────── │  rubric label + rule
+│ │ New users — every entry in Parts I–VI…            │
+│ THE MAP ─────────────────────────────────────────── │
+│  PART  WHAT IT COVERS                               │
+│   I    The Verbs                        ← register  │
+│        Operative verbs as contracts…                │
+│  II    The Modifiers                                │
+│ ────────────────────────────────────────────────── │
+└────────────────────────────────────────────────────┘
+```
+
+### Signature: the contents register
+
+README's Parts table, re-typeset as the contents page of a printed volume. The
+roman ordinal hangs in the margin and is rubricated — which is what rubric red
+was invented for; the Part name is set as a headword in Fraunces; the gloss sits
+under it on the hanging indent. **Every line is a door**: the layout resolves each
+row to the real `<h2 id>` in the full text, so the landing page is a way into
+Part IX, not a poster of the table of contents.
+
+The rail on the full text uses a grey ordinal that turns rubric to mean "you are
+here". Here rubric on every ordinal means "this is an ordinal" — no state is being
+signalled, so there is nothing to misread.
+
+Everything else on the page is set quiet on purpose. The eight section headings
+are rubric labels over a hairline (the cheat sheet's column-head device), not
+display type: eight short sections in Fraunces would read as eight competing
+titles instead of one page of front matter.
+
+### What the page reuses, unchanged
+
+`strong`, `em`, `blockquote`, lists, links, `code`, `p`, `h3` are one rule each,
+shared by `.text` and `.frontis`. The `<strong>`-is-a-headword rule does real work
+here too: it turns "Who this is for" into three dictionary entries. Dark mode
+needed zero landing-specific rules — the token layer had no hole.
+
+---
+
 ## Decision log
 
 **2026-08-15 — Extend the cheat sheet's identity, not tobyjackson.com's.**
@@ -170,6 +229,40 @@ is ever renamed, update the `unless label contains 'Edition'` guard in
 
 **2026-08-15 — Dark mode ships, a theme toggle does not.** See Palette.
 
+**2026-08-15 — `/` is README.md, not a second copy of it.**
+`index.md` is nine lines: front matter plus `{% include_relative README.md %}`.
+There is one source for the intro, the audience list and the Parts map, so the
+repo's front door and the site's front door cannot drift. The layout does the
+presentation; the prose stays a normal README on GitHub, with no classes and no
+front matter (which GitHub would render as a table above the title).
+*Rejected:* front matter on README.md itself (ugly on GitHub); a hand-written
+`index.md` (two copies of the same paragraphs, guaranteed to diverge).
+
+**2026-08-15 — A new layout, not a mode of `dictionary.html`.**
+The two pages share every token and all prose styling but no structure: one is a
+sticky rail plus scroll-spy over 36 KB, the other is a title page. Stripping the
+rail down with conditionals would have made one file that reads as two. They
+share the stylesheet, which is where the duplication would actually have cost
+something.
+
+**2026-08-15 — The register's links are resolved from the book, not slugified.**
+kramdown's ids are not reproducible with Liquid's `slugify` (`Part I — The Verbs`
+becomes `part-i--the-verbs`, and four rows are shortened versions of the real
+heading anyway). The layout converts `speaking-model.md` at build time, reads the
+actual `<h2 id>`s, and matches on the `part-<ordinal>--` prefix, which is unique
+across all thirteen. A row that finds no match renders as plain text, not a
+broken link. Costs one extra markdown conversion per build (~1.4 s total, safe
+mode).
+*Two couplings this creates, both intentional and both cheap to spot:* the layout
+assumes README.md holds exactly one table, and that its first column reads
+`<ordinal> — <name>`.
+
+**2026-08-15 — The README subtitle became italic text, not a heading.**
+It was `### A practitioner's dictionary…` directly under the `#` — a subtitle
+wearing a heading's clothes, and an h1→h3 skip in the page outline. As `*italic*`
+it is what it is on both surfaces, and the site's outline is now h1 followed by
+eight h2 sections. Styled via `.frontis h1 + p`.
+
 **2026-08-15 — Google Fonts kept, self-hosting deferred.**
 House practice is self-hosted `@font-face`. Here the two sibling pages already
 load these three families from the same URL; matching it exactly means the
@@ -184,3 +277,10 @@ worth doing — but for all three pages at once, not this one alone.
   them. This is pre-existing and unchanged by this layout. Fixing it means
   wrapping them in `<…>` in `speaking-model.md`.
 - `/speaking-model/favicon.ico` 404s; the sub-site has no favicon.
+- `_includes/head-custom.html` emits the same `Book` JSON-LD on both Jekyll pages,
+  with `url` pointing at `speaking-model.html`. The landing page is arguably where
+  that entity belongs. Left alone deliberately: it is the GEO pass's file, not a
+  design decision, and changing it should be a GEO call.
+- `/` repeats the same three links three times (band, "Read & use", colophon).
+  Left as-is: the band's are navigation, the content's are the author's, and the
+  colophon matches the full text's. Worth revisiting if the page grows.

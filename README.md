@@ -1,5 +1,5 @@
 # Speaking Model
-### A practitioner's dictionary for the working language between humans and AI models
+*A practitioner's dictionary for the working language between humans and AI models*
 
 There are no magic words for talking to AI — but there *is* a working
 language, the same way surgery and aviation have one: compression with
